@@ -24,8 +24,26 @@ public class Row
     {
         bool added = false;
 
-        if (container.IsValuable)
+        if (container.RequiresCooling)
         {
+            // Attempt to add coolable containers only to the first stack
+            Stack firstStack = Stacks.FirstOrDefault(s => s.IsFirstRow);
+            if (firstStack != null && firstStack.CanAddContainer(container))
+            {
+                added = firstStack.AddContainer(container);
+                if (!added)
+                {
+                    Console.WriteLine("Failed to add coolable container to the first stack due to weight constraints.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No available first stack to add coolable container.");
+            }
+        }
+        else if (container.IsValuable)
+        {
+            // Handle valuable containers as before
             List<Stack> eligibleStacks = Stacks
                 .Where(s => s.CanAddContainer(container))
                 .OrderBy(s => s.Containers.Count)
@@ -38,6 +56,7 @@ public class Row
         }
         else
         {
+            // Handle regular containers as before
             List<Stack> sortedStacks = Stacks
                 .Where(s => s.CanAddContainer(container))
                 .OrderBy(s => s.Containers.Count)

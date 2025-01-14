@@ -10,9 +10,14 @@ namespace ContainerShip
 
             List<Container> containers = new List<Container>();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 90; i++)
             {
                 containers.Add(new RegularContainer(25));
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                containers.Add(new CoolableContainer(20));
             }
 
             ship.PlaceContainers(containers);
