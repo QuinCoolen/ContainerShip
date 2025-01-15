@@ -4,12 +4,14 @@ public class Ship
 {
     public int Length { get; private set; }
     public int Width { get; private set; }
+    public readonly int MinWeight;
     public List<Row> Rows { get; set; }
 
     public Ship(int length, int width)
     {
         Length = length;
         Width = width;
+        MinWeight = Length * Width * 150 / 2;
         Rows = new List<Row>();
 
         for (int i = 0; i < width; i++)

@@ -65,7 +65,6 @@ public class Stack
             Containers.Insert(0, container);
         }
 
-        Console.WriteLine($"Added container type {container.Type} with weight {container.Weight} to {(IsFirstRow ? "first" : "another")} stack.");
         return true;
     }
 }

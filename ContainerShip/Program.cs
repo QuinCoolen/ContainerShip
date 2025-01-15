@@ -6,28 +6,48 @@ namespace ContainerShip
     {
         static void Main(string[] args)
         {
-            Ship ship = new Ship(10, 3);
+            Random rnd = new Random();
+
+            Ship ship = new Ship(rnd.Next(5,10), rnd.Next(3,5));
+            
 
             List<Container> containers = new List<Container>();
-
-            for (int i = 0; i < 104; i++)
+            
+            int totalWeight = 0;
+            while (totalWeight < ship.MinWeight)
             {
-                containers.Add(new RegularContainer(25));
-            }
+                int weight = rnd.Next(0, 27);
+                int containerType = rnd.Next(0, 5);
 
-            for (int i = 0; i < 10; i++)
-            {
-                containers.Add(new CoolableContainer(20));
-            }
+                switch (containerType)
+                {
+                    case 0:
+                    case 1:
+                    case 2:
+                        containers.Add(new RegularContainer(weight));
+                        break;
+                    case 3:
+                        containers.Add(new CoolableContainer(weight));
+                        break;
+                    case 4:
+                        containers.Add(new ValuableContainer(weight));
+                        break;
+                }
 
-            for (int i = 0; i < 20; i++)
-            {
-                containers.Add(new ValuableContainer(10));
+                totalWeight += weight;
             }
 
             ship.PlaceContainers(containers);
-
+            
+            Console.WriteLine($"Minimum Weight Required: {ship.MinWeight}");
             Console.WriteLine(UrlGenerator.GetUrl(ship));
+
+            // Count and print the number of each type of container
+            int regularCount = containers.Count(c => c.Type == ContainerType.Regular);
+            int coolableCount = containers.Count(c => c.Type == ContainerType.Coolable);
+            int valuableCount = containers.Count(c => c.Type == ContainerType.Valuable);
+
+            Console.WriteLine($"Regular: {regularCount}, Coolable: {coolableCount}, Valuable: {valuableCount}");
         }
     }
 }

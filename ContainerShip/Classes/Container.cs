@@ -51,3 +51,13 @@ public class ValuableContainer : Container
         Type = ContainerType.Valuable;
     }
 }
+
+public class ValuableCoolableContainer : Container
+{
+    public ValuableCoolableContainer(int weight) : base(ContainerType.Valuable, weight)
+    {
+        IsValuable = true;
+        RequiresCooling = true;
+        Type = ContainerType.ValuableCoolable;
+    }
+}
