@@ -10,7 +10,7 @@ namespace ContainerShip
 
             List<Container> containers = new List<Container>();
 
-            for (int i = 0; i < 90; i++)
+            for (int i = 0; i < 104; i++)
             {
                 containers.Add(new RegularContainer(25));
             }
@@ -20,7 +20,7 @@ namespace ContainerShip
                 containers.Add(new CoolableContainer(20));
             }
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++)
             {
                 containers.Add(new ValuableContainer(10));
             }

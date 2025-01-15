@@ -10,9 +10,7 @@ public class Row
         Stacks = new List<Stack>();
         for (int i = 0; i < length; i++)
         {
-            // Mark the first and last stack for valuable container placement
-            bool isFirstOrLast = (i == 0) || (i == length - 1);
-            Stacks.Add(new Stack(isFirstOrLast));
+            Stacks.Add(new Stack(i == 0));
         }
         TotalWeight = 0;
     }
@@ -22,13 +20,21 @@ public class Row
         return Stacks.All(stack => stack.Containers.Count == 0);
     }
 
+    public bool IsFull()
+    {
+        return Stacks.All(stack => stack.Containers.Count == 10);
+    }
+    private bool HasValuableContainers(Stack stack)
+    {
+        return stack.Containers.Any(c => c.IsValuable);
+    }
+
     public bool AddContainer(Container container)
     {
         bool added = false;
 
         if (container.RequiresCooling)
         {
-            // Attempt to add coolable containers only to the first stack
             Stack firstStack = Stacks.FirstOrDefault(s => s.IsFirstRow);
             if (firstStack != null && firstStack.CanAddContainer(container))
             {
@@ -45,24 +51,18 @@ public class Row
         }
         else if (container.IsValuable)
         {
-            // Handle valuable containers: place only in first or last stack
             List<Stack> eligibleStacks = new List<Stack>();
 
-            // Add first stack if it can accommodate the container
-            if (Stacks.First().CanAddContainer(container))
+            for (int i = 0; i < Stacks.Count; i++)
             {
-                eligibleStacks.Add(Stacks.First());
-            }
-
-            // Add last stack if it can accommodate the container and it's not the same as the first
-            if (Stacks.Count > 1 && Stacks.Last().CanAddContainer(container))
-            {
-                eligibleStacks.Add(Stacks.Last());
+                if (i % 2 == 0 && Stacks[i].CanAddContainer(container) && !HasValuableContainers(Stacks[i]))
+                {
+                    eligibleStacks.Add(Stacks[i]);
+                }
             }
 
             if (eligibleStacks.Any())
             {
-                // Optionally, prioritize the stack with less current weight
                 added = eligibleStacks
                     .OrderBy(s => s.Containers.Sum(c => c.Weight))
                     .First()
@@ -70,12 +70,12 @@ public class Row
 
                 if (!added)
                 {
-                    Console.WriteLine("Failed to add valuable container to either the first or last stack due to constraints.");
+                    Console.WriteLine("Failed to add valuable container due to weight constraints.");
                 }
             }
             else
             {
-                Console.WriteLine("No available first or last stack to add valuable container.");
+                Console.WriteLine("No available positions for valuable container.");
             }
         }
         else
