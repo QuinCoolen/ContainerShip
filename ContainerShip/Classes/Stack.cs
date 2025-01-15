@@ -14,21 +14,21 @@ public class Stack
 
     public bool CanAddContainer(Container container)
     {
-        // Check weight constraints
-        if (container.IsValuable)
+        // Prevent adding any container on top of a valuable container
+        if (Containers.Any() && Containers.Last().IsValuable)
         {
-            if (Containers.Sum(c => c.Weight) + container.Weight > MaxWeight)
+            Console.WriteLine("Cannot add container on top of a valuable container.");
+            return false;
+        }
+
+        // Check weight constraints
+        if (Containers.Sum(c => c.Weight) + container.Weight > MaxWeight)
+        {
+            if (container.IsValuable)
             {
                 Console.WriteLine("Cannot add valuable container to stack because it would exceed the maximum weight.");
-                return false;
             }
-        }
-        else
-        {
-            if (Containers.Sum(c => c.Weight) + container.Weight > MaxWeight)
-            {
-                return false;
-            }
+            return false;
         }
 
         // Enforce cooling requirements

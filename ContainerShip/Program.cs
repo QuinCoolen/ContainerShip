@@ -20,6 +20,11 @@ namespace ContainerShip
                 containers.Add(new CoolableContainer(20));
             }
 
+            for (int i = 0; i < 10; i++)
+            {
+                containers.Add(new ValuableContainer(10));
+            }
+
             ship.PlaceContainers(containers);
 
             Console.WriteLine(UrlGenerator.GetUrl(ship));
