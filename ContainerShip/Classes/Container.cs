@@ -10,7 +10,6 @@ public abstract class Container
 
     public Container(ContainerType type, int weight)
     {
-
         if (weight > (MaxWeight - Weight))
         {
             throw new Exception("Container is too heavy");
@@ -18,8 +17,8 @@ public abstract class Container
 
         Weight += weight;
 
-        IsValuable = type is ContainerType.Valuable;
-        RequiresCooling = type is ContainerType.Coolable;
+        IsValuable = type is ContainerType.Valuable || type is ContainerType.ValuableCoolable;
+        RequiresCooling = type is ContainerType.Coolable || type is ContainerType.ValuableCoolable;
         Type = type;
     }
 }
@@ -44,7 +43,6 @@ public class CoolableContainer : Container
 
 public class ValuableContainer : Container
 {
-
     public ValuableContainer(int weight) : base(ContainerType.Valuable, weight)
     {
         IsValuable = true;
@@ -54,7 +52,7 @@ public class ValuableContainer : Container
 
 public class ValuableCoolableContainer : Container
 {
-    public ValuableCoolableContainer(int weight) : base(ContainerType.Valuable, weight)
+    public ValuableCoolableContainer(int weight) : base(ContainerType.ValuableCoolable, weight)
     {
         IsValuable = true;
         RequiresCooling = true;

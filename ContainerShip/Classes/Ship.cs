@@ -32,7 +32,7 @@ public class Ship
 
     public bool IsFull()
     {
-        return Rows.All(row => !row.IsEmpty());
+        return Rows.All(row => row.IsFull());
     }
 
     private void IsProperlyLoaded()
@@ -58,6 +58,7 @@ public class Ship
         containers = containers
             .OrderBy(container => container.Type != ContainerType.Coolable)
             .ThenBy(container => container.Type != ContainerType.Regular)
+            .ThenBy(container => container.Type != ContainerType.ValuableCoolable)
             .ThenBy(container => container.Type != ContainerType.Valuable)
             .ToList();
 

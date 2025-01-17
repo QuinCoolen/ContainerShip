@@ -17,7 +17,7 @@ namespace ContainerShip
             while (totalWeight < ship.MinWeight)
             {
                 int weight = rnd.Next(0, 27);
-                int containerType = rnd.Next(0, 5);
+                int containerType = rnd.Next(0, 6);
 
                 switch (containerType)
                 {
@@ -31,6 +31,9 @@ namespace ContainerShip
                         break;
                     case 4:
                         containers.Add(new ValuableContainer(weight));
+                        break;
+                    case 5:
+                        containers.Add(new ValuableCoolableContainer(weight));
                         break;
                 }
 
@@ -46,8 +49,9 @@ namespace ContainerShip
             int regularCount = containers.Count(c => c.Type == ContainerType.Regular);
             int coolableCount = containers.Count(c => c.Type == ContainerType.Coolable);
             int valuableCount = containers.Count(c => c.Type == ContainerType.Valuable);
+            int valuableCoolableCount = containers.Count(c => c.Type == ContainerType.ValuableCoolable);
 
-            Console.WriteLine($"Regular: {regularCount}, Coolable: {coolableCount}, Valuable: {valuableCount}");
+            Console.WriteLine($"Regular: {regularCount}, Coolable: {coolableCount}, Valuable: {valuableCount}, ValuableCoolable: {valuableCoolableCount}");
         }
     }
 }
